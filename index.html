@@ -25,17 +25,24 @@
                 </section>
             </header>
             <nav>
+            </nav>
+
+            <article class="ipaddresses"></article> <!--hidden, ha kész a többi -->
+            <!--a cellák listját és szinezését a JS generálja, a megjelenítés dinamikus-->
+
+            <article class="ipsegments"></article>
+
+            <aside>
                 <fieldset>
                     <legend>Kezdő hálózat (/24)</legend>
                     <span class="fix_block" id="net_base_IP">.</span>
                     <input type="number" id="subnet_IP" min="0" max="254" step="1">
                     <span class="fix_block">.0 /24</span>
                 </fieldset>
-            </nav>
-            <article>
+            </aside>
 
 
-<!--<fieldset>
+            <!--<fieldset>
   <legend>Szegmens hozzáadása</legend>
   <label>Név: <input type="text" id="nev"></label>
   <label>Hostok: <input type="number" id="hostok" min="1" max="254" step="1" value="1"></label>
@@ -64,7 +71,7 @@
 
 <p><button id="torles">Összes szegmens törlése</button></p> -->
 
-            </article>            
+            
 
             <footer>
 

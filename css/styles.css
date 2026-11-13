@@ -10,17 +10,22 @@
 body {
     background-image: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)), url("../images/taylor-vick-netsegments-unsplash.jpg");
     background-size: cover; 
-/*    background-position: center; */
+    background-position: center; 
 }
 
 
 
 main {
-    grid-template-columns: 100%;
-    grid-template-areas: "gr-head"
-                         "gr-nav"
-                         "gr-art"
-                         "gr-foot";
+   height: 100vh; /* régi böngészők miatt */
+   height: 100dvh;
+   display: grid;
+   grid-template-rows: auto auto auto 1fr auto;
+   grid-template-columns: 4fr 1fr;
+   grid-template-areas: "gr-head gr-head"
+                        "gr-nav gr-nav"
+                        "gr-art-address gr-art-address"
+                        "gr-art-segments gr-aside"
+                        "gr-foot gr-foot";
 }
 
 header {
@@ -48,27 +53,72 @@ header {
 }
 
 .header-description li {
-    list-style-position: inside;
-    padding-left: 0;
-    text-indent: 18px;
-    font-size: 16px;
+   list-style-position: inside;
+   padding-left: 0;
+   text-indent: 18px;
+   font-size: 16px;
 }
 
 
 nav {
-    grid-area: gr-nav;
+   grid-area: gr-nav;
 }
 
-article {
-    grid-area: gr-art;
+.ipaddresses {
+   grid-area: gr-art-address;
+   display: grid;
+   grid-template-columns: repeat(16, 1fr);
+   grid-template-rows: repeat(4, 1fr);
+   margin: 10px; 
+   padding: 4px 0;
+   font-size: 14px;
+   overflow-x: auto; /* vízszintes görgetés szükség esetén */
 }
+
+.ipaddresses[hidden] { display: none; }
+
+.ip-block {
+   border: 1px solid lightgreen;
+   border-collapse: collapse;
+   padding: 2px 5px;
+   color: lightgreen;
+   text-align: center;
+   font-family: monospace;
+}
+
+/* sarokcellák, nth-child(n) => n. gyerek kiválasztása az ip-block szülőben */
+.ip-block:nth-child(1)  { border-top-left-radius: 10px; }
+.ip-block:nth-child(16) { border-top-right-radius: 10px; }
+.ip-block:nth-child(49) { border-bottom-left-radius: 10px; }
+.ip-block:nth-child(64) { border-bottom-right-radius: 10px; }
+
+/* ide még jön a másik article  */
+
+.ipsegments {
+   grid-area: gr-art-segments;
+   min-height: 0;
+   margin: 10px;
+   border: 1px solid lightgreen;
+   border-radius: 10px;
+   padding: 2px 5px;
+   overflow-y: auto; /* függőleges görgetés szükség esetén */
+}
+
+aside {
+   grid-area: gr-aside;
+   margin: 10px;
+   border: 1px solid lightgreen;
+   border-radius: 10px;
+   padding: 2px 5px;
+}
+
 
 footer {
-    grid-area: gr-foot;
+   grid-area: gr-foot;
 }
 
 h1 {
-    font-size: 22px;
+   font-size: 22px;
 }
 
 
