@@ -117,17 +117,18 @@ nav {
    font-weight: bold;
 }
    
-, .segments-table td {
+.segments-table td {
    padding: 2px 5px;
    text-align: center;
 }
 
-aside {
+.subnet_input, .segment_input {
    grid-area: gr-aside;
    margin: 10px;
    border: 1px solid lightgreen;
    border-radius: 10px;
    padding: 2px 5px;
+   color: lightgreen;
 }
 
 

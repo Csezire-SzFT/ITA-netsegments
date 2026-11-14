@@ -13,7 +13,7 @@
         <main>
             <header>
                 <section class="header-title">
-                    <h1>Hálózati szegmens számítás, max. 254 hosztra</h1>
+                    <h1>Hálózati szegmens számítás</h1>
                 </section>
                 <section class="header-description">    
                     <h2>Szabályok:</h2>
@@ -33,26 +33,26 @@
             <article class="ipsegments">
                <table class="segments-table">
                   <thead>
-                  <th>#</th><th>Név</th><th>Státusz</th><th>Host</th><th>Blokk</th>
-                  <th>Hálózat</th><th>Első host</th><th>Utolsó host</th><th>Broadcast</th><th></th>
+                  <th>#</th><th>név</th><th>státusz</th><th>host</th><th>blokk</th>
+                  <th>hálózat</th><th>első host</th><th>utolsó host</th><th>broadcast</th><th>akció</th>
                   </thead>
                </table>
             </article>
 
             <aside>
-                <fieldset>
+               <fieldset class="subnet_input">
                   <legend>Kezdő hálózat (/24)</legend>
                   <span class="fix_block" id="net_base_IP">.</span>
-                  <input type="number" id="subnet_IP" min="0" max="254" step="1">
+                  <input type="number" id="subnet_IP" min="0" max="255" step="1">
                   <span class="fix_block">.0 /24</span>
-                </fieldset>
-               <fieldset>
-            <legend>Szegmens hozzáadása</legend>
-               <label>Név: <input type="text" id="nev"></label>
-               <label>Hostok: <input type="number" id="hostok" min="1" max="254" step="1" value="1"></label>
-               <label>Státusz:
+               </fieldset>
+               <fieldset class="segment_input">
+                  <legend>Szegmens hozzáadás</legend>
+                  <label>Hostok: <input type="number" id="hostok" min="1" max="255" step="1" value="1"></label>
+                  <hr>
+                  <label>Státusz:
                   <select id="statusz">
-                     <option value="T">T – tervezés</option>
+                     <option value="T" disabled>T – tervezés</option>
                      <option value="U">U – utólagos</option>
                   </select>
                </label>
