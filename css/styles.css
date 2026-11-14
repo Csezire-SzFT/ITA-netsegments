@@ -104,6 +104,24 @@ nav {
    overflow-y: auto; /* függőleges görgetés szükség esetén */
 }
 
+.segments-table {
+   width: 100%;
+   color: lightgreen;
+   font-family: monospace;
+   font-size: 14px;
+}
+
+.segments-table th {
+   border-bottom: 1px solid lightgreen;
+   font-size: 16px;
+   font-weight: bold;
+}
+   
+, .segments-table td {
+   padding: 2px 5px;
+   text-align: center;
+}
+
 aside {
    grid-area: gr-aside;
    margin: 10px;
@@ -121,10 +139,3 @@ h1 {
    font-size: 22px;
 }
 
-
-
-/*
-    width:100%;
-    border: 2px solid white;
-    border-radius: 5px;
-*/
