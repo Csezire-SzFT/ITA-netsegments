@@ -12,6 +12,6 @@ for (let segments = 0; segments <= 63; segments++) {
   ipAddressTable.append(ipAddressCells);
 }
 
-netBaseIP = getElementById("net_base_IP")
-netBaseIP.value = netBase
+netBaseIP = document.getElementById("net_base_IP")
+netBaseIP.textContent = netBase
 
