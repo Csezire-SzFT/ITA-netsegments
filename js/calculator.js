@@ -95,7 +95,7 @@ function disableSubnetInput() {
 // = műveletek (események) ===
 let baseSegments = loadSegments()
 const subnetField = document.getElementById("subnet_IP");
-const saveSubnetButton = document.getElementById("save_subnet")
+const saveSubnetButton = document.getElementById("save_subnet");
 subnetField.value = baseSegments.noOfSubnet;
 
 saveSubnetButton.addEventListener("click"), () => {
