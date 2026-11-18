@@ -86,7 +86,7 @@ function enableSubnetInput() {
 
 function disableSubnetInput() {
    const subnetField = document.getElementById("subnet_base_IP");
-   const saveSubnetButton = DocumentFragment.getElementById("save_subnet")
+   const saveSubnetButton = document.getElementById("save_subnet")
    subnetField.ReadOnly = true;
    saveSubnetButton.Disabled = true;
 }
@@ -95,7 +95,7 @@ function disableSubnetInput() {
 // = műveletek (események) ===
 let baseSegments = loadSegments()
 const subnetField = document.getElementById("subnet_base_IP");
-const saveSubnetButton = DocumentFragment.getElementById("save_subnet")
+const saveSubnetButton = document.getElementById("save_subnet")
 subnetField.value = baseSegments.subnetBaseIP;
 
 saveSubnetButton.addEventListener("click"), () => {
