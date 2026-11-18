@@ -29,6 +29,7 @@ function toInt(value) {
 
 // === alapállapot betöltése a sessionStorage-ból ===
 const defaultSegments = { noOfRequests: 0, noOfSubnet: 0, segmentRequests: []};
+const storedSegments = "Teszt"
 const allowedSegmentTypes = ["T", "U"]; 
 
 function loadSegments() {
@@ -38,33 +39,41 @@ function loadSegments() {
       if (!loadedSegments || typeof loadSegments !== "object") {
          return structuredClone(defaultSegments);
       }
-// Objektumban benne van helyesn az igények tömbje, ha nem akkor üres tömböt adunk vissza
+// Objektumban benne van helyesen az igények tömbje, ha nem akkor üres tömböt adunk vissza
       const rawRequests = Array.isArray(loadedSegments.segmentRequests) ? 
          loadedSegments.segmentRequests.filter(r => r && typeof r === "object"): [];
 
-
-
-      let noOfRequests = Number(loadedSegments.noOfRequests);
-      if (!Number.isInteger(noOfRequests) || noOfRequests < 0) {
-         noOfRequests = 0;
-      }      
-      let noOfSubnet = Number(loadedSegments.noOfSubnet);
-      if (!Number.isInteger(noOfSubnet) || noOfSubnet < 0 || noOfSubnet > 255) {
+      const segmentRequests = rawRequests.map((r, i) => ({...r,
+// egységesen számként tároljuk a sorszámot
+         subnetOrderNo: subnetOrderNo: Math.max(0, toInt(r.subnetOrderNo) ?? 0)
+// helyes mezőnév, és csak megengedett értékek validálása
+         subnetType: allowedSegmentTypes.includes(r.subnetType) ? r.subnetType : "T",
+// az elnevezése validálása
+         subnetName: typeof r.subnetName === "string" && r.subnetName.trim() !== "" ? r.subnetName.trim(): `Hálózat ${i + 1}`,
+      }));
+// a null, "", true stb. értékek nem csúsznak át számként
+      let noOfSubnet = toInt(loadedSegments.noOfSubnet);
+      if (noOfSubnet === null || noOfSubnet < 1 || noOfSubnet > 255) {
          noOfSubnet = defaultSegments.noOfSubnet;
       }
-      return { 
-         noOfRequests, noOfSubnet,
-         segmentRequests: (loadedSegments.segmentRequests ?? []).map((r, i) => ({ ...r, 
-            subnetOrderNo: r.subnetOrderNo ?? "0",
-            subnetType: r.subnetType ?? "T",
-            subnetName: typeof r.subnetName === "string" && r.subnetName.trim() !== "" ? r.subnetName.trim(): `Hálózat ${i + 1}`,
-      })), 
-      };
-   }
+// az igények száma megegyezik a tömb hosszával
+      let noOfRequests = toInt(loadedSegments.noOfRequests);
+      if (noOfRequests === null || noOfRequests < 0 || noOfRequests !== segmentRequests.length) {
+         noOfRequests = segmentRequests.length;
+      }
+      return { noOfRequests, noOfSubnet, segmentRequests };
+   }         
    catch {
       return structuredClone(defaultSegments);
    }   
 }
+
+function saveSegments=() {
+   sessionStorage.setItem(storedSegments, JSON.stringify(loadSegments));   
+}
+
+
+
 
 
 
@@ -94,8 +103,8 @@ saveSubnetButton.addEventListener("click"), () => {
    if (subnetField.value === "" || !Number.isInteger(subnetValue) || subnetField < 0 || subnetField > 255) return;
    baseSegments.subnetBaseIP = subnetField;
    saveSegments();
-   disableSubnetInput();
-   renderSegments();
+//   disableSubnetInput();
+//   renderSegments();
 }
 
 netBaseIP.textContent = netBase;
