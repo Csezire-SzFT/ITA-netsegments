@@ -45,7 +45,7 @@ function loadSegments() {
 
       const segmentRequests = rawRequests.map((r, i) => ({...r,
 // egységesen számként tároljuk a sorszámot
-         subnetOrderNo: Math.max(0, toInt(r.subnetOrderNo) ?? 0)
+         subnetOrderNo: Math.max(0, toInt(r.subnetOrderNo) ?? 0),
 // helyes mezőnév, és csak megengedett értékek validálása
          subnetType: allowedSegmentTypes.includes(r.subnetType) ? r.subnetType : "T",
 // az elnevezése validálása
