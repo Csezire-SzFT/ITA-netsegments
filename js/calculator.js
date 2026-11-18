@@ -36,7 +36,7 @@ function loadSegments() {
    try {
       const loadedSegments = JSON.parse(sessionStorage.getItem(storedSegments));
 // Objektum került betöltésre, ha nem, akkor alapértelmezett beállítás
-      if (!loadedSegments || typeof loadSegments !== "object") {
+      if (!loadedSegments || typeof loadedSegments !== "object") {
          return structuredClone(defaultSegments);
       }
 // Objektumban benne van helyesen az igények tömbje, ha nem akkor üres tömböt adunk vissza
@@ -69,7 +69,7 @@ function loadSegments() {
 }
 
 function saveSegments() {
-   sessionStorage.setItem(storedSegments, JSON.stringify(loadSegments));   
+   sessionStorage.setItem(storedSegments, JSON.stringify(baseSegments));   
 }
 
 
