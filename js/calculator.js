@@ -68,7 +68,7 @@ function loadSegments() {
    }   
 }
 
-function saveSegments=() {
+function saveSegments() {
    sessionStorage.setItem(storedSegments, JSON.stringify(loadSegments));   
 }
 
