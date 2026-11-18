@@ -98,13 +98,13 @@ const subnetField = document.getElementById("subnet_IP");
 const saveSubnetButton = document.getElementById("save_subnet");
 subnetField.value = baseSegments.noOfSubnet;
 
-saveSubnetButton.addEventListener("click"), () => {
+saveSubnetButton.addEventListener("click", () => {
    const subnetValue = Number(subnetField.value);
    if (subnetField.value === "" || !Number.isInteger(subnetValue) || subnetField < 0 || subnetField > 255) return;
    baseSegments.noOfSubnet = subnetField;
    saveSegments();
 //   disableSubnetInput();
 //   renderSegments();
-}
+});
 
 netBaseIP.textContent = netBase;
