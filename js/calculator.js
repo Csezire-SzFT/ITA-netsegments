@@ -96,12 +96,12 @@ function disableSubnetInput() {
 let baseSegments = loadSegments()
 const subnetField = document.getElementById("subnet_base_IP");
 const saveSubnetButton = document.getElementById("save_subnet")
-subnetField.value = baseSegments.subnetBaseIP;
+subnetField.value = baseSegments.noOfSubnet;
 
 saveSubnetButton.addEventListener("click"), () => {
    const subnetValue = Number(subnetField.value);
    if (subnetField.value === "" || !Number.isInteger(subnetValue) || subnetField < 0 || subnetField > 255) return;
-   baseSegments.subnetBaseIP = subnetField;
+   baseSegments.noOfSubnet = subnetField;
    saveSegments();
 //   disableSubnetInput();
 //   renderSegments();
