@@ -79,7 +79,7 @@ function saveSegments() {
 
 function enableSubnetInput() {
    const subnetField = document.getElementById("subnet_base_IP");
-   const saveSubnetButton = DocumentFragment.getElementById("save_subnet")
+   const saveSubnetButton = document.getElementById("save_subnet")
    subnetField.ReadOnly = false;
    saveSubnetButton.Disabled = false;
 }
