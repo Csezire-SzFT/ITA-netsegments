@@ -1,26 +1,33 @@
 const netBase = "192.168.";
-const inputNumberKeys = ['ArrowUp','ArrowDown','Tab'];
+const inputNumberKeys = ["ArrowUp","ArrowDown","Tab"];
+
 // input mező objektumok
 const netBaseIP = document.getElementById("net_base_IP");
 const subnetField = document.getElementById("subnet_IP");
+const hostRequestField = document.getElementById("host_request");
+
 // input gomb objektumok
 const saveSubnetButton = document.getElementById("save_subnet");
-
+const addSegmentButton = document.getElementById("add_segment");
  
-const ipAddressTable = document.querySelector('.ipaddresses');
+const ipAddressTable = document.querySelector(".ipaddresses");
 const ipAddressBlocks = [];
 
 // IP blokkok létrehozása
 function buildIPAddressTable() {
    for (let segments = 0; segments <= 63; segments++) {
-      const ipAddressCells = document.createElement('div');
-      ipAddressCells.className = 'ip-block';
+      const ipAddressCells = document.createElement("div");
+      ipAddressCells.className = "ip-block";
       ipAddressCells.textContent = `${segments * 4}...${segments * 4 + 3}`;
       ipAddressBlocks.push(ipAddressCells);
       ipAddressTable.append(ipAddressCells);
    }
 }
 
+// timestamp készítése az esetleges hibás nevekhez és azonosításhoz
+function timeStamp(date = new Date()) {
+   return date.toTimeString().slice(0, 8).replace(/:/g, "");
+}
 
 // numerikus értékek ellenőrzése: csak nem negatív egész számot vagy
 // csak számjegyekből álló sztringet fogad el, egyébként null
@@ -47,6 +54,7 @@ function loadSegments() {
          return structuredClone(defaultSegments);
       }
 // Objektumban benne van helyesen az igények tömbje, ha nem akkor üres tömböt adunk vissza
+      const baseTime = Date.now();   
       const rawRequests = Array.isArray(loadedSegments.hostRequests) ? 
          loadedSegments.hostRequests.filter(r => r && typeof r === "object"): [];
 // az igények feldolgozása során minden objektumot ellenőrzünk és normalizálunk
@@ -58,7 +66,8 @@ function loadSegments() {
 // helyes mezőnév, és csak megengedett értékek validálása
             hostType: allowedSegmentTypes.includes(type) ? type : "T",
 // az elnevezése validálása
-            hostName: typeof r.hostName === "string" && r.hostName.trim() !== "" ? r.hostName.trim(): `Net-${i + 1}`,
+            hostName: typeof r.hostName === "string" && r.hostName.trim() !== "" ? r.hostName.trim(): 
+               `Net-${timeStamp(new Date(baseTime + i * 60000))}`,
             hostRequest: checkInt(r.hostRequest) ?? 0,
          };   
       });
@@ -90,18 +99,36 @@ saveSubnetButton.addEventListener("click", () => {
    if (subnetValue === null || subnetValue > 255) return;
    baseSegments.noOfSubnet = subnetValue;
    saveSegments(baseSegments);
-   disableSubnetInput();
    renderSegments(baseSegments.hostRequests);
 });
 
-subnetField.addEventListener('keydown', e => {
+subnetField.addEventListener("keydown", e => {
    if (!inputNumberKeys.includes(e.key)) e.preventDefault();
 });
-subnetField.addEventListener('paste', e => e.preventDefault());
+subnetField.addEventListener("paste", e => e.preventDefault());
 
 
+addSegmentButton.addEventListener("click", () => {
+   const hostRequest = checkInt(hostRequestField.value);
+   if (!hostRequest || hostRequest > 254) return;
 
+   const hostType = document.getElementById("host_status").value;
+   const defaultName = timeStamp();
+   const typedName = document.getElementById("host_name").value.trim(); 
+   const hostName = typedName !== "" ? typedName: `Net-${defaultName}`;
+   const hostRequestNo = Number(defaultName);
 
+   if (baseSegments.hostRequests.some(s => s.hostName === hostName)) return;
+
+   baseSegments.hostRequests.push({ hostRequestNo, hostType, hostName, hostRequest })
+   saveSegments(baseSegments);
+   renderSegments(baseSegments.hostRequests);
+});
+
+hostRequestField.addEventListener("keydown", e => {
+   if (!inputNumberKeys.includes(e.key)) e.preventDefault();
+});
+hostRequestField.addEventListener("paste", e => e.preventDefault());
 
 
 
@@ -109,6 +136,6 @@ subnetField.addEventListener('paste', e => e.preventDefault());
 // ha volt már tárolt adat, az nem veszik el, mert jön a Session Storage-ból 
 let baseSegments = loadSegments();
 netBaseIP.textContent = netBase;
-subnetField.value = baseSegments.noOfSubnet ?? "";
+subnetField.value = baseSegments.noOfSubnet ?? 0;
 buildIPAddressTable();
 renderSegments(baseSegments.hostRequests);

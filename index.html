@@ -44,7 +44,7 @@
                <fieldset class="subnet_input">
                   <legend>Kezdő hálózat (/24)</legend>
                   <span class="fix_block" id="net_base_IP"></span><!--
-               --><input type="number" id="subnet_IP" min="0" max="255" step="1"><!--
+               --><input type="number" id="subnet_IP" min="0" max="255" step="1" value="0"><!--
                --><span class="fix_block">.0 /24</span>
                   <button id="save_subnet" aria-label="Alhálózat mentése" title="Alhálózat mentése">
                      <i class="fa-solid fa-floppy-disk"  aria-hidden="true"></i>
@@ -52,8 +52,8 @@
                </fieldset>
 
                <fieldset class="segment_input">
-                  <legend>Szegmens hozzáadás</legend>
-                  <label>Hoszt igény/státusz: <input type="number" id="hosts" min="1" max="255" step="1" value="1"></label>
+                  <legend>Host-igény hozzáadás</legend>
+                  <label>Host igény/státusz: <input type="number" id="host_request" min="1" max="255" step="1" value="1"></label>
                   <label>
                      <select id="host_status">
                         <option value="T" selected>T</option>
@@ -61,7 +61,7 @@
                      </select>
                   </label><br>
                   <label>Név: <input type="text" id="host_name" maxlength="12"></label>
-                  <button id="hozzaad" aria-label="Szegmens hozzáadása" title="Szegmens hozzáadása">
+                  <button id="add_segment" aria-label="Szegmens hozzáadása" title="Szegmens hozzáadása">
                      <i class="fa-solid fa-plus" aria-hidden="true"></i>
                   </button>
                   <hr>
