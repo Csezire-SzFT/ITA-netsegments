@@ -8,6 +8,7 @@
         <meta name="author" content="Czitler Sándor">
         <title>Czitler Sándor</title>
         <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7/css/all.min.css">
     </head>
     <body>
         <main>
@@ -42,24 +43,31 @@
             <aside>
                <fieldset class="subnet_input">
                   <legend>Kezdő hálózat (/24)</legend>
-                  <span class="fix_block" id="net_base_IP"></span>
-                  <input type="number" id="subnet_IP" min="0" max="255" step="1">
-                  <span class="fix_block">.0 /24</span>
-                  <button id="save_subnet">Ment</button>
+                  <span class="fix_block" id="net_base_IP"></span><!--
+               --><input type="number" id="subnet_IP" min="0" max="255" step="1"><!--
+               --><span class="fix_block">.0 /24</span>
+                  <button id="save_subnet" aria-label="Alhálózat mentése" title="Alhálózat mentése">
+                     <i class="fa-solid fa-floppy-disk"  aria-hidden="true"></i>
+                  </button>
                </fieldset>
 
                <fieldset class="segment_input">
                   <legend>Szegmens hozzáadás</legend>
-                  <label>Hostok: <input type="number" id="hostok" min="1" max="255" step="1" value="1"></label>
+                  <label>Hoszt igény/státusz: <input type="number" id="hosts" min="1" max="255" step="1" value="1"></label>
+                  <label>
+                     <select id="host_status">
+                        <option value="T" selected>T</option>
+                        <option value="U">U</option>
+                     </select>
+                  </label><br>
+                  <label>Név: <input type="text" id="host_name" maxlength="12"></label>
+                  <button id="hozzaad" aria-label="Szegmens hozzáadása" title="Szegmens hozzáadása">
+                     <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                  </button>
                   <hr>
-                  <label>Státusz:
-                  <select id="statusz">
-                     <option value="T" disabled>T – tervezés</option>
-                     <option value="U">U – utólagos</option>
-                  </select>
-               </label>
-               <button id="hozzaad">Hozzáadás</button>
-               <p class="hiba" id="hiba"></p>
+                  <span><b>T</b></span><span> - tervezés, </span>
+                  <span><b>U</b></span><span> - utólagos.</span>   
+                  <p class="hiba" id="hiba"></p>
                </fieldset>
             </aside>
 
@@ -76,6 +84,6 @@
 
             </footer>
         </main>
-        <script src="js/calculator.js"></script>
+        <script src="js/calculator.js" defer></script>
     </body>
 </html>

@@ -1,68 +1,71 @@
 const netBase = "192.168.";
+const inputNumberKeys = ['ArrowUp','ArrowDown','Tab'];
+// input mező objektumok
 const netBaseIP = document.getElementById("net_base_IP");
+const subnetField = document.getElementById("subnet_IP");
+// input gomb objektumok
+const saveSubnetButton = document.getElementById("save_subnet");
 
-/* IP blokkok létrehozása */
+ 
 const ipAddressTable = document.querySelector('.ipaddresses');
 const ipAddressBlocks = [];
 
-for (let segments = 0; segments <= 63; segments++) {
-  const ipAddressCells = document.createElement('div');
-  ipAddressCells.className = 'ip-block';
-  ipAddressCells.textContent = `${segments * 4}...${segments * 4 + 3}`;
-  ipAddressBlocks.push(ipAddressCells);
-  ipAddressTable.append(ipAddressCells);
+// IP blokkok létrehozása
+function buildIPAddressTable() {
+   for (let segments = 0; segments <= 63; segments++) {
+      const ipAddressCells = document.createElement('div');
+      ipAddressCells.className = 'ip-block';
+      ipAddressCells.textContent = `${segments * 4}...${segments * 4 + 3}`;
+      ipAddressBlocks.push(ipAddressCells);
+      ipAddressTable.append(ipAddressCells);
+   }
 }
 
 
-// === numerikus értékek ellenőrzése:csak valódi számot vagy számot tartalmazó, 
-// nem üres stringet fogad el, egyébként null-t ad
+// numerikus értékek ellenőrzése: csak nem negatív egész számot vagy
+// csak számjegyekből álló sztringet fogad el, egyébként null
 function checkInt(value) {
    if (typeof value === "number") {
-      return Number.isInteger(value) ? value : null;
+      return Number.isInteger(value) && value >= 0 ? value : null;
    }
-   if (typeof value === "string" && value.trim() !== "") {
-      const numberValue = Number(value);
-      return Number.isInteger(numberValue) ? numberValue : null;
+   if (typeof value === "string" && /^\s*\d+\s*$/.test(value)) {
+      return Number(value);
    }
    return null;
 }
 
 // === alapállapot betöltése a sessionStorage-ból ===
-const defaultSegments = { noOfRequests: 0, noOfSubnet: 0, hostRequests: []};
-const storedKey = "HostRequests"
+const defaultSegments = { noOfSubnet: null, hostRequests: []};
+const storedKey = "hostRequests";
 const allowedSegmentTypes = ["T", "U"]; 
 
 function loadSegments() {
    try {
       const loadedSegments = JSON.parse(sessionStorage.getItem(storedKey));
 // Objektum került betöltésre, ha nem, akkor alapértelmezett beállítás
-      if (!loadedSegments || typeof loadedSegments !== "object") {
+      if (!loadedSegments || typeof loadedSegments !== "object" || Array.isArray(loadedSegments)) {
          return structuredClone(defaultSegments);
       }
 // Objektumban benne van helyesen az igények tömbje, ha nem akkor üres tömböt adunk vissza
       const rawRequests = Array.isArray(loadedSegments.hostRequests) ? 
          loadedSegments.hostRequests.filter(r => r && typeof r === "object"): [];
 // az igények feldolgozása során minden objektumot ellenőrzünk és normalizálunk
-      const hostRequests = rawRequests.map((r, i) => ({...r,
+      const hostRequests = rawRequests.map((r, i) => {
+         const type = typeof r.hostType === "string" ? r.hostType.trim().toUpperCase() : "";
+         return {...r,
 // egységesen számként tároljuk a sorszámot
-         hostRequestNo: Math.max(0, checkInt(r.hostRequestNo) ?? 0),
+            hostRequestNo: checkInt(r.hostRequestNo) ?? 0,
 // helyes mezőnév, és csak megengedett értékek validálása
-         hostType: allowedSegmentTypes.includes(r.hostType) ? r.hostType : "T",
+            hostType: allowedSegmentTypes.includes(type) ? type : "T",
 // az elnevezése validálása
-         hostName: typeof r.hostName === "string" && r.hostName.trim() !== "" ? r.hostName.trim(): `Net-${i + 1}`,
-         hostRequest: checkInt(r.hostRequest) ?? 0,
-      }));
+            hostName: typeof r.hostName === "string" && r.hostName.trim() !== "" ? r.hostName.trim(): `Net-${i + 1}`,
+            hostRequest: checkInt(r.hostRequest) ?? 0,
+         };   
+      });
 // a null, "", true stb. értékek nem csúsznak át számként a 3. oktet megadásánál
       let noOfSubnet = checkInt(loadedSegments.noOfSubnet);
-      if (noOfSubnet === null || noOfSubnet < 1 || noOfSubnet > 255) {
-         noOfSubnet = defaultSegments.noOfSubnet;
-      }
-// az igények száma megegyezik a tömb hosszával
-      let noOfRequests = checkInt(loadedSegments.noOfRequests);
-      if (noOfRequests === null || noOfRequests < 0 || noOfRequests !== hostRequests.length) {
-         noOfRequests = hostRequests.length;
-      }
-      return { noOfRequests, noOfSubnet, hostRequests };
+      if (noOfSubnet === null || noOfSubnet > 255) { noOfSubnet = defaultSegments.noOfSubnet; }
+      return { noOfSubnet, hostRequests };
    }         
    catch {
       return structuredClone(defaultSegments);
@@ -74,34 +77,38 @@ function saveSegments(savedSegments) {
 }
 
 
-function enableSubnetInput() {
-   const subnetField = document.getElementById("subnet_base_IP");
-   const saveSubnetButton = document.getElementById("save_subnet")
-   subnetField.readOnly = false;
-   saveSubnetButton.disabled = false;
-}
+// a szemgmensek felrajzolása 
+function renderSegments(segmentstoDraw) {
 
-function disableSubnetInput() {
-   const subnetField = document.getElementById("subnet_base_IP");
-   const saveSubnetButton = document.getElementById("save_subnet")
-   subnetField.readOnly = true;
-   saveSubnetButton.disabled = true;
 }
 
 
 // === műveletek (események) ===
 // === alhálózat 3. oktet mentés esemény ===
 saveSubnetButton.addEventListener("click", () => {
-   const subnetValue = Number(subnetField.value);
-   if (subnetField.value === "" || !Number.isInteger(subnetValue) || subnetValue < 0 || subnetValue > 255) return;
+   const subnetValue = checkInt(subnetField.value);
+   if (subnetValue === null || subnetValue > 255) return;
    baseSegments.noOfSubnet = subnetValue;
    saveSegments(baseSegments);
    disableSubnetInput();
-//   renderSegments();
+   renderSegments(baseSegments.hostRequests);
 });
 
+subnetField.addEventListener('keydown', e => {
+   if (!inputNumberKeys.includes(e.key)) e.preventDefault();
+});
+subnetField.addEventListener('paste', e => e.preventDefault());
 
-let baseSegments = loadSegments()
-const subnetField = document.getElementById("subnet_IP");
-const saveSubnetButton = document.getElementById("save_subnet");
-subnetField.value = baseSegments.noOfSubnet;
+
+
+
+
+
+
+// Induláskor lefutó kód, ami felrajzolja az aktuális állapotot
+// ha volt már tárolt adat, az nem veszik el, mert jön a Session Storage-ból 
+let baseSegments = loadSegments();
+netBaseIP.textContent = netBase;
+subnetField.value = baseSegments.noOfSubnet ?? "";
+buildIPAddressTable();
+renderSegments(baseSegments.hostRequests);
