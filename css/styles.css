@@ -105,20 +105,20 @@ nav {
    overflow: auto; /* vízszintes/függőleges görgetés szükség esetén */
 }
 
-.segments-table {
+.segments_table {
    width: 100%;
    color: lightgreen;
    font-family: monospace;
    font-size: 14px;
 }
 
-.segments-table th {
+.segments_table th {
    border-bottom: 1px solid lightgreen;
    font-size: 16px;
    font-weight: bold;
 }
    
-.segments-table td {
+.segments_table td {
    padding: 2px 5px;
    text-align: center;
 }
@@ -167,7 +167,7 @@ input[type="text"] {
    width: 8em;
 }
 
-button:hover, input:hover {
+button:not(:disabled):hover, input:not(:disabled):hover {
    background-color: yellow;
 }
 
