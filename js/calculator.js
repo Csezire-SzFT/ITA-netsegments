@@ -33,10 +33,11 @@ function timeStamp(date = new Date()) {
 // csak számjegyekből álló sztringet fogad el, egyébként null
 function checkInt(value) {
    if (typeof value === "number") {
-      return Number.isInteger(value) && value >= 0 ? value : null;
+      return Number.isSafeInteger(value) && value >= 0 ? value : null;
    }
    if (typeof value === "string" && /^\s*\d+\s*$/.test(value)) {
-      return Number(value);
+      const valueFromString = Number(value);
+      return Number.isSafeInteger(valueFromString) ? valueFromString : null ;
    }
    return null;
 }
@@ -54,23 +55,26 @@ function loadSegments() {
          return structuredClone(defaultSegments);
       }
 // Objektumban benne van helyesen az igények tömbje, ha nem akkor üres tömböt adunk vissza
-      const baseTime = Date.now();   
       const rawRequests = Array.isArray(loadedSegments.hostRequests) ? 
          loadedSegments.hostRequests.filter(r => r && typeof r === "object"): [];
 // az igények feldolgozása során minden objektumot ellenőrzünk és normalizálunk
-      const hostRequests = rawRequests.map((r, i) => {
-         const type = typeof r.hostType === "string" ? r.hostType.trim().toUpperCase() : "";
-         return {...r,
-// egységesen számként tároljuk a sorszámot
-            hostRequestNo: checkInt(r.hostRequestNo) ?? 0,
+      const hostRequests = rawRequests
+         .map(r => {
+            const type = typeof r.hostType === "string" ? r.hostType.trim().toUpperCase() : "";
+            return {
 // helyes mezőnév, és csak megengedett értékek validálása
-            hostType: allowedSegmentTypes.includes(type) ? type : "T",
+               hostType: allowedSegmentTypes.includes(type) ? type : null,
 // az elnevezése validálása
-            hostName: typeof r.hostName === "string" && r.hostName.trim() !== "" ? r.hostName.trim(): 
-               `Net-${timeStamp(new Date(baseTime + i * 60000))}`,
-            hostRequest: checkInt(r.hostRequest) ?? 0,
-         };   
-      });
+               hostName: typeof r.hostName === "string" ? r.hostName.trim(): "",
+               hostRequest: checkInt(r.hostRequest) ?? 0,
+            };
+         })
+         .filter(r => r.hostType !== null && r.hostRequest > 0)
+         .map((r, i) => ({ 
+            ...r, 
+            hostRequestNo: i + 1,
+            hostName: r.hostName || `Net-${i + 1}`,
+         }));
 // a null, "", true stb. értékek nem csúsznak át számként a 3. oktet megadásánál
       let noOfSubnet = checkInt(loadedSegments.noOfSubnet);
       if (noOfSubnet === null || noOfSubnet > 255) { noOfSubnet = defaultSegments.noOfSubnet; }
