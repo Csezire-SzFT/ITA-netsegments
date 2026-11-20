@@ -115,6 +115,10 @@ function calculateSegments(sourceSegments) {
 
 // a szemgmensek felrajzolása 
 function renderSegments(segmentstoDraw) {
+   
+
+
+
 
 }
 

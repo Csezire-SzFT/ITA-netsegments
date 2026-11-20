@@ -1,16 +1,16 @@
 * {
-    box-sizing: border-box;
-    margin: 0px;
-    padding: 0px;
-    font-family: Consolas, "Courier New", monospace;
+   box-sizing: border-box;
+   margin: 0px;
+   padding: 0px;
+   font-family: Consolas, "Courier New", monospace;
 }
 
 
 
 body {
-    background-image: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)), url("../images/taylor-vick-netsegments-unsplash.jpg");
-    background-size: cover; 
-    background-position: center; 
+   background-image: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)), url("../images/taylor-vick-netsegments-unsplash.jpg");
+   background-size: cover; 
+   background-position: center; 
 }
 
 
@@ -29,32 +29,32 @@ main {
 }
 
 header {
-    grid-area: gr-head;
-    color: lightgreen;
+   grid-area: gr-head;
+   color: lightgreen;
 }
 
 .header-title {
-    text-align: center;
+   text-align: center;
 }
 
 .header-description {
-    width: fit-content;
-    margin: 5px auto;
-    border: 2px solid lightgreen;
-    border-radius: 10px;
-    padding: 5px;
-    text-align: justify;
+   width: fit-content;
+   margin: 5px auto;
+   border: 2px solid lightgreen;
+   border-radius: 10px;
+   padding: 5px;
+   text-align: justify;
 }
 
 .header-description h2 {
-    font-weight: bold;
-    font-size: 18px;
-    text-decoration: underline;
+   font-weight: bold;
+   font-size: 18px;
+   text-decoration: underline;
 }
 
 .header-description li {
    list-style-position: inside;
-   padding-left: 0;
+   padding-left: 0px;
    text-indent: 18px;
    font-size: 16px;
 }
@@ -78,6 +78,7 @@ nav {
 .ipaddresses[hidden] { display: none; }
 
 .ip-block {
+   display: none;
    border: 1px solid lightgreen;
    border-collapse: collapse;
    padding: 2px 5px;
@@ -122,8 +123,15 @@ nav {
    text-align: center;
 }
 
-.subnet_input, .segment_input {
-   grid-area: gr-aside;
+aside {
+   grid-area: gr-aside;                       
+   min-height: 0;                             
+   display: grid;
+   grid-template-rows: auto auto auto 1fr;    
+   overflow: auto;
+}
+
+fieldset {
    margin: 10px;
    border: 1px solid lightgreen;
    border-radius: 10px;
@@ -133,8 +141,21 @@ nav {
 
 button {
    background-color: lightgreen;
-   width: 22px;
-   height: 22px;
+   border-radius: 12px;
+   width: 24px;
+   height: 24px;
+}
+
+#delete_segments {
+   display: block;
+   width: auto;
+   margin: 0px auto;
+   padding: 0px 10px;
+   font-weight: bold;   
+}
+
+.message_box {
+   text-align: justify; 
 }
 
 input[type="number"] {
@@ -153,7 +174,6 @@ button:hover, input:hover {
 button:disabled, input:disabled {
    background-color: gray;
 }
-
 
 footer {
    grid-area: gr-foot;
