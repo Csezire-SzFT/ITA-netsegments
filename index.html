@@ -35,8 +35,8 @@
                <table class="segments_table">
                   <thead>
                      <tr>
-                        <th>#</th><th>név</th><th>státusz</th><th>host</th><th>blokk</th>
-                        <th>hálózat</th><th>első host</th><th>utolsó host</th><th>broadcast</th><th>akció</th>
+                        <th>#</th><th>név</th><th>státusz</th><th>host => blokk</th><th>hálózat</th>
+                        <th>alhálózati maszk</th><th>első host</th><th>utolsó host</th><th>broadcast</th><th>akció</th>
                      </tr>
                   </thead>
                   <tbody></tbody>
@@ -44,7 +44,7 @@
             </article>
 
             <aside>
-               <fieldset class="subnet_input">
+               <fieldset id="subnet_input">
                   <legend>Kezdő hálózat (/24)</legend>
                   <span class="fix_block" id="net_base_IP"></span><!--
                --><input type="number" id="subnet_IP" min="0" max="255" step="1" value="0"><!--
@@ -54,7 +54,7 @@
                   </button>
                </fieldset>
 
-               <fieldset class="segment_input">
+               <fieldset id="segment_input">
                   <legend>Host-igény hozzáadás</legend>
                   <label>Host igény/státusz: <input type="number" id="host_request" min="1" max="255" step="1" value="1"></label>
                   <label>
@@ -70,13 +70,12 @@
                   <hr>
                   <span><b>T</b></span><span> - tervezés, </span>
                   <span><b>U</b></span><span> - utólagos.</span>   
-                  <p class="hiba" id="hiba"></p>
                </fieldset>
-               <fieldset class="delete_input">
+               <fieldset>
                   <legend>Új felosztás tervezése</legend>
                   <button id="delete_segments">Összes szegmens törlése</button>
                </fieldset>
-               <fieldset class="message_box">
+               <fieldset id="message_box">
                   <legend>Üzenet</legend>
                   <p id="messages"></p>
                </fieldset>

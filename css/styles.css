@@ -75,10 +75,7 @@ nav {
    overflow-x: auto; /* vízszintes görgetés szükség esetén */
 }
 
-.ipaddresses[hidden] { display: none; }
-
 .ip-block {
-   display: none;
    border: 1px solid lightgreen;
    border-collapse: collapse;
    padding: 2px 5px;
@@ -154,7 +151,8 @@ button {
    font-weight: bold;   
 }
 
-.message_box {
+#message_box {
+   text-indent: 28px;
    text-align: justify; 
 }
 
@@ -167,12 +165,16 @@ input[type="text"] {
    width: 8em;
 }
 
+input {
+   font-weight: bold;
+}
+
 button:not(:disabled):hover, input:not(:disabled):hover {
    background-color: yellow;
 }
 
-button:disabled, input:disabled {
-   background-color: gray;
+button:disabled, input:disabled, select:disabled {
+   background-color: lightgray;
 }
 
 footer {
