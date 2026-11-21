@@ -3,10 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="vLSM alhálózat számítás">
+        <meta name="description" content="VLSM alhálózat számítás">
         <meta name="keywords" content="net, subnet, vlsm, calculate">
         <meta name="author" content="Czitler Sándor">
-        <title>Czitler Sándor</title>
+        <title>Hálózati szegmens számítás</title>
         <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7/css/all.min.css">
     </head>
@@ -28,10 +28,10 @@
             <nav>
             </nav>
 
-            <article class="ipaddresses"></article> <!--hidden, ha kész a többi -->
+            <article class="ipaddresses"><h2 hidden>IP címek</h2></article>
             <!--a cellák listját és szinezését a JS generálja, a megjelenítés dinamikus-->
 
-            <article class="ipsegments">
+            <article class="ipsegments"><h2 hidden>IP szegmensek</h2>
                <table class="segments_table">
                   <thead>
                      <tr>
@@ -58,7 +58,7 @@
                   <legend>Host-igény hozzáadás</legend>
                   <label>Host igény/státusz: <input type="number" id="host_request" min="1" max="255" step="1" value="1"></label>
                   <label>
-                     <select id="host_status">
+                     <select id="host_status" aria-label="Státusz">
                         <option value="T" selected>T</option>
                         <option value="U">U</option>
                      </select>

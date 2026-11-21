@@ -77,18 +77,17 @@ nav {
 
 .ip-block {
    border: 1px solid lightgreen;
-   border-collapse: collapse;
    padding: 2px 5px;
    color: lightgreen;
    text-align: center;
    font-family: monospace;
 }
 
-/* sarokcellák, nth-child(n) => n. gyerek kiválasztása az ip-block szülőben */
-.ip-block:nth-child(1)  { border-top-left-radius: 10px; }
-.ip-block:nth-child(16) { border-top-right-radius: 10px; }
-.ip-block:nth-child(49) { border-bottom-left-radius: 10px; }
-.ip-block:nth-child(64) { border-bottom-right-radius: 10px; }
+/* sarokcellák, nth-of-type(n) => n. div kiválasztása az ip-block szülőben */
+.ip-block:nth-of-type(1)  { border-top-left-radius: 10px; }
+.ip-block:nth-of-type(16) { border-top-right-radius: 10px; }
+.ip-block:nth-of-type(49) { border-bottom-left-radius: 10px; }
+.ip-block:nth-of-type(64) { border-bottom-right-radius: 10px; }
 
 /* ide még jön a másik article  */
 
@@ -169,7 +168,7 @@ input {
    font-weight: bold;
 }
 
-button:not(:disabled):hover, input:not(:disabled):hover {
+button:not(:disabled):hover, input:not(:disabled):hover, select:not(:disabled):hover {
    background-color: yellow;
 }
 
@@ -184,4 +183,5 @@ footer {
 h1 {
    font-size: 22px;
 }
+
 

@@ -253,6 +253,8 @@ addSegmentButton.addEventListener("click", () => {
    const hostName = typedName !== "" ? typedName: `Net-${defaultName}`;
    const hostRequestNo = defaultName;
 
+   const subnetValue = checkInt(subnetField.value);
+   if (subnetValue !== null && subnetValue <= 255) baseSegments.noOfSubnet = subnetValue;   
    baseSegments.hostRequests.push({ hostRequestNo, hostType, hostName, hostRequest });
    document.getElementById("host_request").value = 1;
    document.getElementById("host_name").value = "";
@@ -289,11 +291,10 @@ document.querySelector('.segments_table tbody').addEventListener('click', b => {
    const lines = [
       `${cell("host_name")} (${cell("host_type")}): ${cell("host_request")}`,
       cell("net_address"),
-      cell("subnet_mask"),
    ];
    // ha elfér, az első, utolsó és broadcast cím is kell
    if (cell("first_host") !== "") {
-      lines.push(cell("first_host"), cell("last_host"), cell("broadcast"));
+      lines.push(cell("subnet_mask"),cell("first_host"), cell("last_host"), cell("broadcast"));
    }
 
    navigator.clipboard.writeText(lines.join("\n"))
@@ -306,8 +307,9 @@ deleteSegmentsButton.addEventListener("click", () => {
    if (baseSegments.hostRequests.length === 0) return;
    if (!confirm("Biztosan törlöd az összes szegmenst?")) return;
 
+   baseSegments.noOfSubnet = null;
    baseSegments.hostRequests = [];
-   document.getElementById("subnet_IP").value = 1
+   subnetField.value = 0;
    saveSegments(baseSegments);
    renderSegments(calculateSegments(baseSegments.hostRequests));
    updateHostTypeControl();
