@@ -307,6 +307,7 @@ deleteSegmentsButton.addEventListener("click", () => {
    if (!confirm("Biztosan törlöd az összes szegmenst?")) return;
 
    baseSegments.hostRequests = [];
+   document.getElementById("subnet_IP").value = 1
    saveSegments(baseSegments);
    renderSegments(calculateSegments(baseSegments.hostRequests));
    updateHostTypeControl();
